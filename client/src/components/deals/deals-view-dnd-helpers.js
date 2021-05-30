@@ -42,36 +42,40 @@ export const onDragEnd = (result, columns, setColumns, dispatch) => {
 };
 
 export const generateDealsStageColumns = (deals) => {
-  const dealsArray = deals.map(item => {
-    return ({id: item._id, amount: item.amount, name: item.name, stage: item.stage})}) 
-  
-  const qualifiedDeals = dealsArray.filter(item => item.stage === 'Qualified')
-  const initiatedDeals = dealsArray.filter(item => item.stage === 'Initiated')
-  const contractSentDeals = dealsArray.filter(item => item.stage === 'Contract Sent')
-  const closedWonDeals = dealsArray.filter(item => item.stage === 'Closed Won')
-  const closedLostDeals = dealsArray.filter(item => item.stage === 'Closed Lost')
-  
+ 
+  const calculateAmountTotal = (dealStage) => dealStage.map(deal => deal.amount).reduce((acc, dealAmount) => acc + dealAmount, 0).toFixed(2);
+
   const dealStageColumns = {
     [uuid()]: {
       name: "Initiated",
-      items: initiatedDeals
+      items: deals['Initiated'].items,
+      quantity: deals['Initiated'].items.length,
+      amount: calculateAmountTotal(deals['Initiated'].items),
     },
     [uuid()]: {
       name: "Qualified",
-      items: qualifiedDeals
+      items: deals['Qualified'].items,
+      quantity: deals['Qualified'].items.length,
+      amount: calculateAmountTotal(deals['Qualified'].items)
     },
     [uuid()]: {
       name: "Contract Sent",
-      items: contractSentDeals
+      items: deals['Contract Sent'].items,
+      quantity: deals['Contract Sent'].items.length,
+      amount: calculateAmountTotal(deals['Contract Sent'].items)
     },
     [uuid()]: {
       name: "Closed Won",
-      items: closedWonDeals
+      items: deals['Closed Won'].items,
+      quantity: deals['Closed Won'].items.length,
+      amount: calculateAmountTotal(deals['Closed Won'].items)
     },
     [uuid()]: {
       name: "Closed Lost",
-      items: closedLostDeals
+      items: deals['Closed Lost'].items,
+      quantity: deals['Closed Lost'].items.length,
+      amount: calculateAmountTotal(deals['Closed Lost'].items)
     }
   }
-  return dealStageColumns
-}
+  return dealStageColumns;
+};

@@ -1,20 +1,25 @@
+import { Link } from "react-router-dom"; 
 import "./nav-style.css";
+import iconLogo from './icon-logo.png'
 
 function Nav() {
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-light">
-      <a className="navbar-brand" href="/">Parsity-CRM</a>
-        <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-          <span className="navbar-toggler-icon"></span>
-        </button>
-      <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
-        <div className="navbar-nav">
-          <a className="navbar-item nav-link active" href="/">Home <span className="sr-only"></span></a>
-          <a className="navbar-item nav-link" href="/">Dashboard</a>
-          <a className="navbar-item nav-link" href="/">Log In</a>
-        </div>
-      </div>
-    </nav>
+    
+    <nav class="navbar navbar-expand-sm ">
+      <img className="icon-logo" src={iconLogo}></img>
+    <Link className="nav-title navbar-brand" to="/companies"><h3 className="nav-title">Parsity-CRM </h3></Link> 
+   
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link" href="#">
+              <button className="dashboard-button">Dashboard</button>
+            </a>
+        </li>
+          <li className="login-signup nav-item"><h4 >Login</h4></li>
+          <li className="login-signup nav-item"><h4 >Sign Up</h4></li>
+    </ul>
+</nav>
+
   );
 };
 

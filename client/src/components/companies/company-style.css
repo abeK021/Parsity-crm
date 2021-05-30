@@ -75,13 +75,6 @@ a {
   text-decoration: none;
 }
 
-.add-button {
-  background-color: #E46407;
-  color: #F5F5F5;
-  font-weight: 700;
-  border: #cbd6e2;
-  margin: 15px;
-}
 
 .modal-open {
   padding-right: 0px !important;

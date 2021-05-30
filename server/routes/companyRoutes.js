@@ -36,6 +36,11 @@ router.get("/", (req, res) => {
     })
 })
 
+router.get("/list", (req, res) => {
+  Company.find( {}, "name" ).exec((err, companiesList)=> {
+    res.send(companiesList)
+  })
+})
 // TO-DO: Do we need to send saved company or simply a message stating company was successfully saved?
 router.post("/", (req, res) => {
   if(!req.body.name) {

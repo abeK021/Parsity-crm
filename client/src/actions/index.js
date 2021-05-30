@@ -5,10 +5,12 @@ export const GET_COMPANY = "GET_COMPANY";
 export const GET_DEALS = "GET_DEALS";
 export const POST_COMPANY = "POST_COMPANY";
 export const PUT_DEAL = "PUT_DEAL";
+export const EDIT_COPMANY = "EDIT_COPMANY";
 export const POST_DEAL = "POST_DEAL";
+export const RESET_NEW_COMPANY = "RESET_NEW_COMPANY";
 
-export function getCompanies() {
-  return axios.get(`/companies`)
+export function getCompanies(pageNumber) {
+  return axios.get(`/companies?page=${pageNumber}`)
   .then(response => {
     return {
       type: GET_COMPANIES,
@@ -21,7 +23,7 @@ export function getCompanies() {
 };
 
 export function getDeals() {
-  return axios.get(`/deals`)
+  return axios.get(`/deals/by-stage`)
   .then(response => {
     return {
       type: GET_DEALS,
@@ -42,13 +44,19 @@ export function postNewCopmany(newCompany) {
       payload: response
     }; 
   })
-  .then(() => getCompanies())
   .catch(error => {
     alert('Error');
   });
 };
 
+export function resetNewCompany() {
+  return {
+    type: RESET_NEW_COMPANY
+  }
+}
+
 export function postNewDeal(newDeal) {
+  debugger;
   return axios.post(`/deals`, newDeal)
   .then(response => {
     return {
@@ -74,6 +82,19 @@ export function putDeal(id, updatedStage) {
   .catch(error => {alert('Error')});
 };
 
+export function editDeal(updatedDeal) {
+  console.log(updatedDeal)
+ /*  return axios.put(`/deals/${id}`, {stage: updatedStage})
+  .then(response => {
+    return {
+      type: PUT_DEAL
+      }
+    }
+  )
+  .then(() => getDeals())
+  .catch(error => {alert('Error')}); */
+};
+
 export function getCompanyById(_id) {
   return axios.get(`/companies/${_id}`)
   .then(response => {
@@ -84,5 +105,14 @@ export function getCompanyById(_id) {
   })
   .catch(error => {
     alert('Error, that company does not exist');
+  });
+};
+
+export function editCopmany(updatedInfo, id) {
+  debugger;
+  return axios.put(`/companies/${id}`, updatedInfo)
+  .then(()=>getCompanyById(id))
+  .catch(error => {
+    alert('Error');
   });
 };

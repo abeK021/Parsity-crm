@@ -1,17 +1,14 @@
-import { useEffect, useState } from "react";
-import {Modal, Button} from 'react-bootstrap';
-import { useDispatch, useSelector } from "react-redux";
-import { postNewCopmany, resetNewCompany } from '../../actions'
+import { useState } from "react";
+import { Modal, Button } from 'react-bootstrap';
+import { useDispatch } from "react-redux";
+import { editCopmany } from '../../actions'
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
-import { useHistory } from "react-router";
-import './companies-view-style.css'
-
-// const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
+import { PencilSquare } from 'react-bootstrap-icons';
 
 const companySchema = Yup.object().shape({
-  name: Yup.string().required("Please enter a Company Name"),
+  name: Yup.string().required(),
   owner: Yup.string(),
   phone: Yup.string(),
   city: Yup.string(),
@@ -19,29 +16,18 @@ const companySchema = Yup.object().shape({
   industry: Yup.string()
 })
 
-function AddCompany() {
+function EditCompany({ company, id }) {
   const { reset, register, handleSubmit, formState: { errors }} = useForm({
     resolver: yupResolver(companySchema),
   });
-  const newCompany = useSelector(({newCompany}) => newCompany);
-  const history = useHistory();
+
   const dispatch = useDispatch(); 
   const [show, setShow] = useState(false);
 
-  const handleCompanyAdd = (data) => {
-    dispatch(postNewCopmany(data))
-    // reset()
-    // setShow(false);
+  const handleCopmanyEdit = (data) => {
+    dispatch(editCopmany(data, id))
+    setShow(false);
   };
-
-  useEffect(() => {
-    if(newCompany.isSuccessful) {
-      debugger;
-      history.push(`/companies/${newCompany.newCompanyId}`)
-      dispatch(resetNewCompany())
-    }
-     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [newCompany])
 
   const onClose = () => {
     setShow(false)
@@ -50,23 +36,19 @@ function AddCompany() {
 
   const formFields = ['Name', 'Owner', 'Phone', 'City', 'State', 'Industry']
 
-  const renderAddCompanyModal = () => {
+  const renderEditCompanyModal = () => {
     return (
       <>
-       <div className="container-fluid ">
-        <div className="row col-12 d-flex justify-content-end">
-          <div className="col "> <Button  className="add-company-button" onClick={() => setShow(true)}>
-          Add a Company
-        </Button></div>
-         </div>
-      </div>
-        
+        <PencilSquare width={32} height={32} onClick={() => setShow(true)}/>
+        {/* <Button className="glyphicon glyphicon-pencil" variant="primary" onClick={() => setShow(true)}>
+          Edit
+        </Button> */}
 
         <Modal show={show} onHide={() => setShow(false)}>
           <Modal.Header>
-            <Modal.Title>Add a new Company</Modal.Title>
+            <Modal.Title>Edit Company</Modal.Title>
           </Modal.Header>
-          <form onSubmit={handleSubmit(handleCompanyAdd)}>
+          <form onSubmit={handleSubmit(handleCopmanyEdit)}>
             <Modal.Body>
               {formFields.map(field => {
                 return (
@@ -75,7 +57,7 @@ function AddCompany() {
                       <label>{field}</label>
                       <input
                         className="form-control"
-                        placeholder={`Enter Company ${field}`}
+                        defaultValue={company[field.toLowerCase()]}
                         name={field.toLowerCase()}
                         {...register(field.toLowerCase())}
                       ></input>
@@ -98,9 +80,9 @@ function AddCompany() {
 
   return (
     <div>
-      {renderAddCompanyModal()}
+      {renderEditCompanyModal()}
     </div>
   );
 };
 
-export default AddCompany;
+export default EditCompany;

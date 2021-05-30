@@ -25,11 +25,12 @@ router.get("/", (req, res) => {
     .populate("company")
     .populate("stageHistory")
     .exec((err, dealResults) => {
-    if (err) {
-      console.error(err)
-    }
-    res.send(dealResults);
-  });
+      if (err) {
+        console.error(err)
+        res.end();
+      }
+      res.send(dealResults);
+    });
 })
 
 router.get("/by-stage", (req, res) => {
@@ -73,6 +74,26 @@ router.post("/", (req, res) => {
     }) 
 })
 
+router.get("/conversion-rate", (req, res) => {
+
+  // const generateConversionRates = async () => {
+  //   const contractSentDeals = await Deal.find({archived: true, stageHistory})
+  //   // const populatedDeals = await Deal.find({archived: true}).populate("stageHistory").exec();
+  //   const contractSentDealIds = await ChangeEntry.find({newValue: "Contract Sent"}, "deal").exec()
+
+  //   const numberOfDealsWon = await Deal.find({archived: true, stage: "Closed Won"}).count().exec();
+  //   const numberOfInitiatedDeals = await Deal.find({archived: true}).count().exec();
+  //   const initiatedStageConversionRate = numberOfDealsWon / numberOfInitiatedDeals ;
+  //   const numberOfQualifiedDeals = 2 
+  //   const qualifiedStageConversionRate = numberOfDealsWon / numberOfQualifiedDeals ;
+  //   const numberOfContractSentDeals = 2 
+  //   const qualifiedStageConversionRate = numberOfDealsWon / numberOfContractSentDeals ;
+  // }
+
+})
+
+
+
 router.get("/:id", (req, res) => {
   res.send(req.deal);
 })
@@ -81,75 +102,53 @@ router.get("/:id", (req, res) => {
 // TO-DO: Make sure any changes to the stage is a valid stage
 // TO-DO: Add in the stageHistory tracker here, so a changeEntry is created if the stage changes.
 router.put("/:id", (req, res) => {
-  const deal = req.deal;
-  let stageChanged = false;
-  for (prop in req.body) {
-    deal[prop] = req.body[prop];
+  const { deal } = req;
+  if (!req.body.stage){
+    return res.send('stage not provided, must provide stage for update')
   }
-  deal.save()
-    .then(dealWithUpdates => {
-      res.send(dealWithUpdates);
+  if(deal.stage === req.body.stage){
+    return res.send('existing stage provided in put request. check actions')
+  }
+  if (!dealStages.includes(req.body.stage)){
+    return res.send('invalid stage provided, check dealstages for details')
+  }
+  deal.stage = req.body.stage;
+  const newChangeEntry = new ChangeEntry({
+    timeStamp: new Date(),
+    deal: deal._id,
+    newValue: deal.stage
+  });
+  newChangeEntry.save()
+    .then(savedEntry=>{
+      deal.stageHistory.push(savedEntry._id);
+      return deal.save()
     })
-    .catch((err) => {
+    .then(savedDeal=>{
+      res.send(savedDeal)
+    })
+    .catch(err => {
       console.error(err);
-      res.end();
     })
 })
 
 // update takes in query 'stage' corresponding to dealStages.js array in devData folder
 // if no query is provided, it advances the deal one stage
 router.put("/:id/update", (req, res) => {
-  const deal = req.deal;
-  let oldStageIndex = dealStages.findIndex(stage => stage === deal.stage);
-  if (oldStageIndex === 3 || oldStageIndex === 4) {
-    return res.send('Deal already closed, unable to advance')
+  const { deal } = req;
+  let stageChanged = false;
+  for (prop in req.body) {
+    deal[prop] = req.body[prop];
   }
-  let newIndex
-  req.query.stage ? newIndex = Number(req.query.stage) : newIndex = oldStageIndex + 1;
-  deal.stage = dealStages[newIndex];
-  const newChangeEntry = new ChangeEntry({
-    timeStamp: new Date(),
-    deal: deal._id,
-    newValue: deal.stage
-  });
-  deal.stageHistory.push(newChangeEntry._id);
-
+  //save data as soon as possible, persist on database immediatelty
+  //save changeEntry first, THEN push and save deals
   deal.save()
-    .then(savedDeal => {
-      newChangeEntry.save();
-      res.send(savedDeal);
-    })
-    .catch(err => {
-      console.error(err);
-    })
-
-  // Deal.findById(req.params.id).exec()
-  //   .then((deal) => {
-  //     if(!deal) {
-  //       res.status(404).send("Deal not found");
-  //     }
-  //     let oldStageIndex = dealStages.findIndex(stage => stage === deal.stage);
-  //     if (oldStageIndex === 3 || oldStageIndex === 4) {
-  //       return res.send('Deal already closed, unable to advance')
-  //     }
-  //     let newIndex
-  //     req.query.stage ? newIndex = Number(req.query.stage) : newIndex = oldStageIndex + 1;
-  //     deal.stage = dealStages[newIndex];
-  //     const newChangeEntry = new ChangeEntry({
-  //       timeStamp: new Date(),
-  //       deal: deal._id,
-  //       newValue: deal.stage
-  //     });
-  //     deal.stageHistory.push(newChangeEntry._id);
-
-  //     deal.save((err, savedDeal)=>{
-  //       newChangeEntry.save();
-  //       res.send(savedDeal)
-  //     })
-  //   })
-  //   .catch((err) => {
-  //     console.error(err)
-  //   })
+  .then(dealWithUpdates => {
+    res.send(dealWithUpdates);
+  })
+  .catch((err) => {
+    console.error(err);
+    res.end();
+  })
 })
 
 router.put("/:id/cancel", (req, res) => {

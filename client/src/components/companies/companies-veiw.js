@@ -1,28 +1,31 @@
 import { getCompanies } from '../../actions';
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect , useState} from 'react';
+import { useEffect /* , useState */} from 'react';
 import _ from 'lodash'
-import { FormControl } from 'react-bootstrap'
-
+/* import { FormControl } from 'react-bootstrap' */
+import Paginate from '../pagination/pagination'
 import '../App.css'
-
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
+const queryString = require('query-string');
 
 function CompaniesView() {
   const { companies } = useSelector(state => state.companyData);
-  
   const dispatch = useDispatch();
+  const location = useLocation();
+ /*  const [urlQuery, setUrlQuery] = useState(1); */
+  const currentQuery = queryString.parse(location.search);
 
   useEffect(() => { // loads all compaines on initial render
-    dispatch(getCompanies());
+    dispatch(getCompanies(currentQuery.page));
   // eslint-disable-next-line react-hooks/exhaustive-deps
   },  [getCompanies]);
 
+  
   function renderCompaniesDisplay () {
     if (!_.isEmpty(companies)) { // if companies returned from dispatch, render companies
       const companyTableRows = companies.map(item => {
       return (
-        <tr key={item.name} className ="table-row">
+        <tr key={item._id} className ="table-row">
           <td><Link to={`companies/${item._id}`}>{item.name}</Link></td>
           <td>{item.owner}</td>
           <td>{item.phone}</td>
@@ -48,9 +51,9 @@ function CompaniesView() {
             </tr>
           </thead>
           <tbody>
-              {companyTableRows}
+              {companyTableRows}    
           </tbody>
-        </table>
+        </table>       
       </div>
       );
     };
@@ -59,6 +62,8 @@ function CompaniesView() {
 return (
   <div >
     {renderCompaniesDisplay()}
+    {/* renders our pagination component */}
+    <Paginate page={queryString.page}/>
   </div>
   );
 };

@@ -66,4 +66,8 @@ router.get("/generate-dev-data", (req, res) => {
   generateDummyData();
 })
 
+router.get("/generate-archives", (req, res) => {
+  res.end();
+})
+
 module.exports = router;

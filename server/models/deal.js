@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
+const ChangeEntry = require("./changeEntry");
 const Schema = mongoose.Schema;
-
 
 const DealSchema = new Schema({
   name: { type: String, required: true },

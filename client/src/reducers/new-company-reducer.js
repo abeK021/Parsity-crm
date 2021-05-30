@@ -1,15 +1,19 @@
-import { POST_COMPANY } from "../actions";
+import { POST_COMPANY, RESET_NEW_COMPANY } from "../actions";
 
 const DEFAULT_STATE = {
-  newCompany: []
+  isSuccessful: false,
+  newCompany: {}
 };
 
 const NewCompanyReducer = function(state = DEFAULT_STATE, action) {
   switch (action.type) {
       case POST_COMPANY:
         return {
-        newCompany: action.payload.data,
-            }
+          isSuccessful: true,
+          newCompanyId: action.payload.data._id,
+        }
+      case RESET_NEW_COMPANY:
+        return DEFAULT_STATE;
     default:
       return state;
   };

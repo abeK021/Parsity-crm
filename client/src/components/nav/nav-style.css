@@ -1,5 +1,6 @@
 .navbar {
   background-color: #565453 !important;
+  padding: 0;
 }
 
 .navbar-item {
@@ -12,3 +13,76 @@
   color: #F5F5F5 !important;
   font-weight: 800;
 }
+
+.navbar-nav {
+  float: right
+}
+
+.nav {
+  margin-top: 0;
+ 
+}
+
+.navbar-nav {
+  margin-left: auto;
+}
+
+.navbar  {
+  background-color: #565453 !important;
+  width: 100%
+}
+
+.nav-title{
+  color: white;
+  
+}
+
+.dashboard-button {
+    background-color: white; 
+    
+    color: #E46407;
+    padding: 6px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 20px;
+    margin-right: 300px;
+
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    transition: all 0.5s ease 0s;
+}
+
+.dashboard-button:hover {
+  background-color: #E46407; 
+  border: solid 1px #E46407;
+  color: white;
+  padding: 6px 16px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 20px;
+
+
+  box-shadow: 0px 4px 8px rgba(249, 247, 247, 0.4);
+  color: #fff;
+  transform: translateY(-4px);
+}
+
+.icon-logo {
+  min-height: 100%
+}
+
+.login-signup {
+  color: white;
+  margin-right: 10px
+}
+
+@media screen and (max-width: 800px) {
+  .dashboard-button { 
+     margin-right: 10px;
+  } 
+}
+
+
+
+
