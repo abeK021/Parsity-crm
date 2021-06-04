@@ -6,8 +6,8 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
-import { postNewDeal, getCompaniesList } from '../../actions';
-import XCloseButton from '../buttons/xCloseButton';
+import { postNewDeal, getCompaniesList } from '../../../actions';
+import XCloseButton from '../../buttons/xCloseButton';
 
 const dealSchema = Yup.object().shape({
   name: Yup.string().required('Please enter a name for the deal'),

@@ -1,5 +1,5 @@
 import uuid from 'uuid/dist/v4';
-import { putDeal } from '../../actions';
+import { putDeal } from '../../../actions';
 
 export const onDragEnd = (result, columns, setColumns, dispatch) => {
   if (!result.destination) return;

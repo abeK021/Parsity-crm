@@ -95,3 +95,7 @@ a {
   display: flex;
   justify-content: center;
 }
+
+.error {
+  border: none
+}

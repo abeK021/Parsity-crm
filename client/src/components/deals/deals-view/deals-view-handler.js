@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import _ from 'lodash';
-import { getDeals } from '../../actions';
+import { getDeals } from '../../../actions';
 import DealsView from './deals-view';
 
 function DealsViewHandler() {
@@ -21,7 +21,7 @@ function DealsViewHandler() {
     }
     if (!_.isEmpty(error)) {
       return (
-        <div className="float-container col-md-8">
+        <div className="float-container error col-md-8">
           <p>Sorry, something went wrong, please try again at a later time.</p>
         </div>
       );

@@ -1,5 +1,5 @@
 import Moment from 'react-moment';
-import EditDeal from '../edit-deal';
+import EditDeal from './edit-deal';
 import DeleteButton from '../../buttons/deleteButton';
 import ArchiveButton from '../../buttons/archiveButton';
 import { Link } from 'react-router-dom';

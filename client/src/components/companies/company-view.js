@@ -70,7 +70,7 @@ const CompanyView = (props) => {
     }
     if (!_.isEmpty(error)) {
       return (
-        <div className="float-container col-md-8">
+        <div className="float-container error col-md-8">
           <p>Sorry, something went wrong, please try again at a later time.</p>
         </div>
       );
