@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import _ from 'lodash';
 import { getDeals } from '../../../actions';
 import DealsView from './deals-view';
+import DealFilters from '../../filters/DealFilters'
 
 function DealsViewHandler() {
   const { deals } = useSelector((state) => state.dealsData);
@@ -17,7 +18,12 @@ function DealsViewHandler() {
 
   const renderDealView = () => {
     if (_.isEmpty(error) && !_.isEmpty(deals)) {
-      return <DealsView deals={deals} />;
+      return (
+        <>
+        <DealFilters deals={deals}/>
+        <DealsView deals={deals} />
+      </>
+      )
     }
     if (!_.isEmpty(error)) {
       return (

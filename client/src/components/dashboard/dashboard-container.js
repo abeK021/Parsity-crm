@@ -3,7 +3,7 @@ import { Nav } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import DashboardView from './dashboard-view/dashboard-view';
 
-function DealsContainer() {
+function DashboardContainer() {
   return (
     <>
       <Nav
@@ -32,4 +32,4 @@ function DealsContainer() {
   );
 }
 
-export default DealsContainer;
+export default DashboardContainer;

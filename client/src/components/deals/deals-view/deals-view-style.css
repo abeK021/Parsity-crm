@@ -110,5 +110,8 @@
 }
 
 .error {
-  border: none
+  border: none;
+}
+
+#filter-container {
 }
