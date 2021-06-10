@@ -1,18 +1,18 @@
-import { POST_DEAL } from "../actions";
+import { POST_DEAL } from '../actions/action-names';
 
 const DEFAULT_STATE = {
-  newDeal: []
+  newDeal: [],
 };
 
-const NewDealReducer = function(state = DEFAULT_STATE, action) {
+const NewDealReducer = function (state = DEFAULT_STATE, action) {
   switch (action.type) {
-      case POST_DEAL:
-        return {
+    case POST_DEAL:
+      return {
         newDeal: action.payload.data,
-            }
+      };
     default:
       return state;
-  };
+  }
 };
 
 export default NewDealReducer;

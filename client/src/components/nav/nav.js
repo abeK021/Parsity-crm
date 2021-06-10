@@ -1,26 +1,16 @@
-import { Link } from "react-router-dom"; 
-import "./nav-style.css";
-import iconLogo from './icon-logo.png'
+import { Link } from 'react-router-dom';
+import './nav-style.css';
+import iconLogo from './icon-logo.png';
 
 function Nav() {
   return (
-    
-    <nav class="navbar navbar-expand-sm ">
-      <img className="icon-logo" src={iconLogo}></img>
-    <Link className="nav-title navbar-brand" to="/companies"><h3 className="nav-title">Parsity-CRM </h3></Link> 
-   
-    <ul class="navbar-nav">
-        <li class="nav-item">
-            <a class="nav-link" href="#">
-              <button className="dashboard-button">Dashboard</button>
-            </a>
-        </li>
-          <li className="login-signup nav-item"><h4 >Login</h4></li>
-          <li className="login-signup nav-item"><h4 >Sign Up</h4></li>
-    </ul>
-</nav>
-
+    <nav className="navbar navbar-expand-sm ">
+      <img className="icon-logo" src={iconLogo} alt="" />
+      <Link className="nav-title navbar-brand" to="/companies">
+        <img className="icon-logo" src="closr-logo-3.png" alt="" />
+      </Link>
+    </nav>
   );
-};
+}
 
 export default Nav;

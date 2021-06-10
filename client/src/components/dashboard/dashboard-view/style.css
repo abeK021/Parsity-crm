@@ -1,0 +1,12 @@
+.box-flex {
+  display: flex;
+  justify-content: center;
+}
+
+.display {
+  margin: 10px;
+} 
+
+.highcharts-credits {
+  display: none
+}

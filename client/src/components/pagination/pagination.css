@@ -1,7 +1,21 @@
 a {
   text-decoration: none;
-  display: inline-block;
-  padding: 8px 16px;
+}
+
+.pag-text-style {
+  color: #0091ae;
+  font-weight: 700;
+}
+
+.center-pag-element.pag-text-style:hover {
+  color: #0091ae;
+  font-weight: 700;
+  background-color: white;
+}
+
+.pag-text-style:hover {
+  color: #0091ae;
+  font-weight: 700;
 }
 
 .previous {
@@ -37,9 +51,17 @@ a {
   border: none;
 }
 
-.arrow:hover{
+.arrow:hover {
   background-color: #e46407;
   color: white;
   cursor: pointer;
-  padding: 6px 15px
+  padding: 6px 15px;
+}
+
+#pagination {
+  display: flex;
+  padding-bottom: 5vh;
+  justify-content: center;
+  padding-top: 5vh;
+  width: 100%;
 }

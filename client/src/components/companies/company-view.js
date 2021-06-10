@@ -1,14 +1,15 @@
-import { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
-import { getCompanyById } from "../../actions";
-/* import Nav from '../nav/nav'; */
-import EditCompany from './edit-company'
+import { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { Button } from 'react-bootstrap';
+import _ from 'lodash';
+import { getCompanyById } from '../../actions';
 import './company-style.css';
-import _ from "lodash";
+import CompanyViewCard from './company-view-card';
 
 const CompanyView = (props) => {
-  const { company }  = useSelector(state => state.companyView);
+  const { company } = useSelector((state) => state.companyView);
+  const { error } = useSelector((state) => state.companyView);
   const companyId = props.match.params._id;
 
   const dispatch = useDispatch();
@@ -18,51 +19,59 @@ const CompanyView = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [getCompanyById]);
 
-
-  // will refactor this whole function to clean it up, ok for now to fix the error
   function renderCompany() {
-    if (!_.isEmpty(company.deals)) {
-      let deals = company.deals.map(deal => deal)
+    // if there is no error and the company has associated deals, return the company details and the associated list of deals
+    if (_.isEmpty(error) && !_.isEmpty(company.deals)) {
+      const deals = company.deals.map((deal) => deal);
       return (
-        <div className="float-container col-md-8">
-          <div className = "float-child info col-md-4">
-            <h2>Company Info</h2>
-            <h4>{company.name}</h4>
-            <p>Created on:</p><h6>{company.createdAt}</h6>
-            <p>Owner/CEO: </p><h6>{company.owner}</h6>
-            <p>Phone: </p><h6>{company.phone}</h6>
-            <p>Location: </p><h6>{company.city}, {company.state}</h6>
-            <p>Industry: </p><h6>{company.industry}</h6>
+        <div className="center">
+          <div className="col-md-4 p-2">
+            <CompanyViewCard company={company} companyId={companyId} />
           </div>
-          <div className = "float-child deals col-md-4">
-            <h2 className="deals-title">Associated Deals</h2>
-            {deals.map((deal, id) => (
-              <div key={id} >
-                <p>{deal.name}</p>
-                <h6>Amount: ${deal.amount}</h6>
-                <h6>Stage: {deal.stage}</h6>
+          <div className="col-md-4 p-2">
+            <div className="card" width="18rem">
+              <div className="card-body">
+                <h2 className="deals-title">Active Deals</h2>
+                {/* loop through the array of deals and render each detail in its respective tag */}
+                {deals.map((deal, id) => (
+                  <div key={id}>
+                    <hr />
+                    <Link to={`/deals/${deal._id}`}><p>{deal.name}</p></Link>
+                    <h6>Amount: ${deal.amount}</h6>
+                    <h6>Stage: {deal.stage}</h6>
+                  </div>
+                ))}
               </div>
-            ))
-            }
+            </div>
           </div>
         </div>
       );
-    } else {
+      // if there is no error and the company does not have associated deals, return the company details
+    }
+    if (_.isEmpty(error) && _.isEmpty(company.deals)) {
       return (
-        <div className="float-container col-md-8">
-          <div className = "float-child info col-md-4">
-            <h2>Company Info</h2>
-            <h4>{company.name}</h4>
-            <p>Created on:</p><h6>{company.createdAt}</h6>
-            <p>Owner/CEO: </p><h6>{company.owner}</h6>
-            <p>Phone: </p><h6>{company.phone}</h6>
-            <p>Location: </p><h6>{company.city}, {company.state}</h6>
-            <p>Industry: </p><h6>{company.industry}</h6>
+        <div className="center">
+          <div className="col-md-4 p-2">
+            <CompanyViewCard company={company} companyId={companyId} />
           </div>
-          <div className = "float-child deals col-md-4">
-            <h2 className="deals-title">Associated Deals</h2>
-            <h6>There are no deals associated with this company</h6>
+          <div className="col-md-4 p-2">
+            <div className="card" width="18rem">
+              <div className="card-body">
+                <h2 className="deals-title">Active Deals</h2>
+                <h6 className="center">
+                  There are no active deals associated with this company
+                </h6>
+              </div>
+            </div>
           </div>
+        </div>
+      );
+      // if there is an error, return the respective error message
+    }
+    if (!_.isEmpty(error)) {
+      return (
+        <div className="float-container error col-md-8">
+          <p>Sorry, something went wrong, please try again at a later time.</p>
         </div>
       );
     }
@@ -70,9 +79,11 @@ const CompanyView = (props) => {
 
   return (
     <div className="text">
-      <Link to="/"><button className="btn-return">Return to full list</button></Link>
+      <Link to="/companies" variant="primary">
+        <Button className="btn-return">Return to full list</Button>
+      </Link>
       {renderCompany()}
-      <EditCompany company={company} id={companyId}/>
+      {/* <EditCompany company={company} id={companyId}/> */}
     </div>
   );
 };

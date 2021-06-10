@@ -9,11 +9,10 @@
   background-color: #E46407; 
   border: solid 1px #E46407;
   color: white;
-  padding: 6px 16px;
+  padding: 6px 14px;
   text-align: center;
-  text-decoration: none;
   display: inline-block;
-  font-size: 20px ;
+  font-size: 18px ;
   margin-top: 30px;
   margin-bottom: 0;
   box-shadow: 2px 4px 6px 
@@ -23,12 +22,25 @@
   background-color: white; 
   border: solid 1px #E46407;
   color: #E46407;
-  padding: 6px 16px;
+  padding: 6px 14px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: 20px;
+  font-size: 18px;
 }
 
+.company-name:hover {
+  text-decoration: underline;
+}
 
+td {
+  vertical-align: middle;
+}
 
+.secondary-column {
+  width: 16.4%
+}
+
+.main-column {
+  width: 18%
+}
